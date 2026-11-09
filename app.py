@@ -43,7 +43,25 @@ with t1:
         c[1].metric("Shown in app", f"₹{current:,.0f}")
         c[2].metric("Gain so far", f"{pct:.1f}%", f"₹{gain:,.0f}")
         st.caption("Assumes every monthly instalment went through.")
-        st.subheader(f"Why the figure is small this early (month {months})")
+        illus = core.illustration(months)
+        hi, g = illus[-1][1], pct / 100
+        ref = "For reference: what steady growth would look like"
+        if g > max(0.25, hi * 3):
+            st.warning("This gain is far higher than monthly instalments would normally show this early, so please "
+                       "double-check what you entered (monthly amount, months, current value). If the numbers are right, "
+                       "your app's help centre can explain how it calculates them.")
+            title = ref
+        elif g < 0:
+            st.info("Your app shows less than you have put in so far. Values move both ways, and a dip in the early "
+                    "months is common. The table is for comparison only.")
+            title = ref
+        elif g <= hi * 1.25:
+            title = f"Why the figure looks small this early (month {months})"
+        else:
+            st.info("Your figure is above what a steady 12% a year would show by now. Values move both ways, so "
+                    "treat it as a snapshot of today.")
+            title = ref
+        st.subheader(title)
         rows = [{"If a fund grew steadily at": f"{r:.0%} a year", f"You would see after {months} months": f"{g:.1%}",
                  f"On ₹{invested:,.0f} invested": f"₹{g * invested:,.0f}"} for r, g in core.illustration(months)]
         st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
