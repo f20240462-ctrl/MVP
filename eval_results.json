@@ -1,0 +1,29 @@
+{
+  "n": 3,
+  "skipped": 7,
+  "accuracy": 0.6666666666666666,
+  "fallback_rate": 0.3333333333333333,
+  "rows": [
+    {
+      "item": "youtube_comment::yt_UgxAnOSL1hJpIlFlJId4AaABAg",
+      "expected": "pause_or_reduce",
+      "got": "pause_or_reduce",
+      "confidence": 0.95,
+      "correct": true
+    },
+    {
+      "item": "youtube_comment::yt_UgwBnvvEMunGlg4VVg94AaABAg",
+      "expected": "expectation_gap",
+      "got": "unclear",
+      "confidence": 0.8,
+      "correct": false
+    },
+    {
+      "item": "youtube_comment::yt_UgzxdTRdSD5SyJLOIWF4AaABAg",
+      "expected": "expectation_gap",
+      "got": "expectation_gap",
+      "confidence": 0.95,
+      "correct": true
+    }
+  ]
+}
