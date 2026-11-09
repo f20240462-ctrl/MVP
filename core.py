@@ -16,6 +16,7 @@ EXPL = {
 HARD = re.compile(r"which fund|best fund|good fund|recommend|suggest|forecast|predict|will i (get|earn|make)|how much will|guarantee|\btax|nifty|which stock", re.I)
 BANNED = re.compile(r"you should|i recommend|guarantee|will earn|will grow|hurry|last chance|miss out|act now|too late|\bbuy\b|\bsell\b|stop your sip|cancel your sip", re.I)
 NUM = r"\d[\d,]*(?:\.\d+)?"
+_CLIENTS = {}
 
 
 def illustration(n, rates=(0.06, 0.08, 0.12)):
@@ -31,8 +32,9 @@ def _gen(prompt, key, temp, json_mode=False):
     cfg = {"temperature": temp}
     if json_mode:
         cfg["response_mime_type"] = "application/json"
-    return genai.Client(api_key=key).models.generate_content(model=MODEL, contents=prompt, config=cfg).text.strip()
-
+    if key not in _CLIENTS:
+        _CLIENTS[key] = genai.Client(api_key=key)
+    return _CLIENTS[key].models.generate_content(model=MODEL, contents=prompt, config=cfg).text.strip()
 
 def route(text, key):
     """Returns (route, confidence). 'out_of_scope' is decided by rules before any model call."""
